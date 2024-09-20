@@ -1,1 +1,1 @@
-Negotiation and conflict resolution assistant with AI to come.
+Rails app generated with lewagon/rails-templates, created by the Le Wagon coding bootcamp team.
