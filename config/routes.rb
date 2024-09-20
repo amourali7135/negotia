@@ -5,4 +5,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  resources :conflicts, except: [:index, ] do
+    resources :issue, except: [:index, :show]
+  end
+
+  resources :negotiations, except: [:index] do 
+    
+  end
+
 end
