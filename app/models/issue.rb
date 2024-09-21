@@ -1,7 +1,7 @@
 class Issue < ApplicationRecord
   belongs_to :conflict
 
-  enum priority: { lowest: 0, low: 1, average: 2, high: 3, very_high: 4 }
+  enum priority: { lowest: 0, low: 1, ordinary: 2, high: 3, very_high: 4 }
   enum status: { pending: 0, in_progress: 1, completed: 2, stalemate: 3 }
 
   validates :title, presence: true

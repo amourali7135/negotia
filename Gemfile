@@ -37,7 +37,7 @@ gem "redis", "~> 4.0"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -55,10 +55,14 @@ gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
+gem 'faker'
+
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
+
+  gem 'rspec-rails', '~> 7.0.0'
 end
 
 group :development do
@@ -70,11 +74,35 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem "bullet"
+  gem "better_errors" # Don't use with RSPEC.  Wait, why not?
+
+  gem "binding_of_caller"
+
+  gem 'active_record_doctor'
+
+  gem "strong_migrations"
+
+  gem 'debugbar'
+
+  gem 'rack-mini-profiler', require: false
+  # For memory profiling
+  gem 'memory_profiler'
+  # For call-stack profiling flamegraphs
+  gem 'stackprof'
+
+  gem 'online_migrations'
+
+  gem 'database_consistency', require: false
+
+  gem 'derailed_benchmarks'
+
+  
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-
 end
