@@ -19,7 +19,7 @@ gem "puma", "~> 5.0"
 gem "importmap-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
+gem "turbo-rails"#, "~> 2.0.10"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
@@ -57,6 +57,10 @@ gem "sassc-rails"
 
 gem 'faker'
 
+gem "rails_admin", "3.2"
+
+
+
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -77,28 +81,21 @@ group :development do
 
   gem "bullet"
   gem "better_errors" # Don't use with RSPEC.  Wait, why not?
-
   gem "binding_of_caller"
-
   gem 'active_record_doctor'
-
   gem "strong_migrations"
-
   gem 'debugbar'
-
   gem 'rack-mini-profiler', require: false
   # For memory profiling
   gem 'memory_profiler'
   # For call-stack profiling flamegraphs
   gem 'stackprof'
-
   gem 'online_migrations'
-
   gem 'database_consistency', require: false
-
   gem 'derailed_benchmarks'
+  gem "pghero"
+  gem "rails-pg-extras"
 
-  
 end
 
 group :test do
@@ -106,3 +103,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+gem "sassc-rails"
+gem "cssbundling-rails"
