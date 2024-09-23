@@ -156,7 +156,6 @@ GEM
     faker (3.0.0)
       i18n (>= 1.8.11, < 2)
     ffi (1.17.0)
-    ffi (1.17.0-arm64-darwin)
     font-awesome-sass (6.5.2)
       sassc (~> 2.0)
     get_process_mem (0.2.7)
@@ -190,6 +189,9 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    listen (3.9.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
@@ -271,6 +273,11 @@ GEM
       nested_form (~> 0.3)
       rails (>= 6.0, < 8)
       turbo-rails (>= 1.0, < 3)
+    rails_live_reload (0.3.6)
+      listen
+      nio4r
+      railties
+      websocket-driver
     railties (7.0.8.4)
       actionpack (= 7.0.8.4)
       activesupport (= 7.0.8.4)
@@ -279,6 +286,9 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.2.1)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.11.1)
+      ffi (~> 1.0)
     rdoc (6.7.0)
       psych (>= 4.0.0)
     redis (4.8.1)
@@ -387,7 +397,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   faker
-  font-awesome-sass (~> 6.1)
+  font-awesome-sass (~> 6.5.2)
   importmap-rails
   jbuilder
   memory_profiler
@@ -399,6 +409,7 @@ DEPENDENCIES
   rails (~> 7.0.8, >= 7.0.8.4)
   rails-pg-extras
   rails_admin (= 3.2)
+  rails_live_reload
   redis (~> 4.0)
   rspec-rails (~> 7.0.0)
   sassc-rails

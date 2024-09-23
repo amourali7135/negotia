@@ -51,7 +51,7 @@ gem "bootsnap", require: false
 gem "bootstrap", "~> 5.2"
 gem "devise"
 gem "autoprefixer-rails"
-gem "font-awesome-sass", "~> 6.1"
+gem "font-awesome-sass", "~> 6.5.2"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
@@ -96,6 +96,8 @@ group :development do
   gem "pghero"
   gem "rails-pg-extras"
 
+  gem "rails_live_reload"
+
 end
 
 group :test do
@@ -103,5 +105,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem "sassc-rails"
+# gem "sassc-rails"
 gem "cssbundling-rails"
