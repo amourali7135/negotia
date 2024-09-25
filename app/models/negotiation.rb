@@ -4,12 +4,21 @@ class Negotiation < ApplicationRecord
   belongs_to :user2, class_name: 'User'
   belongs_to :conflict1, class_name: 'Conflict'
   belongs_to :conflict2, class_name: 'Conflict'
+  belongs_to :initiator, class_name: 'User'
 
   enum status: { pending: 0, in_progress: 1, resolved: 2, stalemate: 3, cancelled: 4 }
 
   validates :initiator, :respondent, :initiator_conflict, :respondent_conflict, presence: true
   validate :users_are_different
   validate :conflicts_belong_to_respective_users
+
+  def initiated_by?(user)
+    initiator == user
+  end
+
+  def add_participant(user)
+    negotiation_participants.create(user:)
+  end
 
   private
 
