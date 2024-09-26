@@ -7,9 +7,10 @@ class NegotiationsController < ApplicationController
   end
 
   def show
-    # @messages = @negotiation.messages.order(created_at: :asc)
-    # @message = Message.new
-    # @proposals = @negotiation.proposals.order(created_at: :desc)
+    @negotiation = Negotiation.includes(:issues, proposals: %i[proposed_by issue]).find(params[:id])
+    @messages = @negotiation.messages.order(created_at: :asc)
+    @message = Message.new
+    @proposals = @negotiation.proposals.order(created_at: :desc)
     # @negotiation_issues = @negotiation.issues
   end
 

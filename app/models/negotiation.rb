@@ -7,7 +7,7 @@ class Negotiation < ApplicationRecord
   belongs_to :initiator, class_name: 'User'
 
   has_many :messages, dependent: :destroy
-  # has_many :proposals, dependent: :destroy
+  has_many :proposals, dependent: :destroy
   # has_many :negotiation_issues, dependent: :destroy
   # has_many :issues, through: :negotiation_issues
 
