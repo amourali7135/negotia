@@ -31,7 +31,7 @@ class NegotiationsController < ApplicationController
     else
       @user_conflicts = current_user.conflicts
       @other_users = User.where.not(id: current_user.id)
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

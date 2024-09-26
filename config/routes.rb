@@ -18,4 +18,18 @@ Rails.application.routes.draw do
 
   end
 
+
+  # resources :negotiations do
+  #   member do
+  #     get :respond
+  #     patch :accept
+  #     patch :decline
+  #   end
+  #   resources :messages, only: [:create]
+  #   resources :proposals, only: [:new, :create] do
+  #     resources :proposal_responses, only: [:create]
+  #   end
+  #   resources :negotiation_issues, only: [:index, :create, :destroy]
+  # end
+
 end
