@@ -1,6 +1,9 @@
 class ProposalresponsesController < ApplicationController
   before_action :set_proposal
 
+  def new
+  end
+
   def create
     @proposal_response = @proposal.proposal_responses.build(proposal_response_params)
     @proposal_response.user = current_user

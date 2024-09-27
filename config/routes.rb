@@ -15,7 +15,10 @@ Rails.application.routes.draw do
   end
 
   resources :negotiations, except: [:index] do 
-
+    resources :proposals, only: [:new, :create, :show] do
+      resources :proposal_responses, only: [:create]
+    end
+    resources :messages, only: [:create]
   end
 
 

@@ -7,4 +7,12 @@ class Proposal < ApplicationRecord
   validates :content, presence: true
 
   scope :for_issue, ->(issue_id) { where(issue_id:) }
+
+  def response_for(user)
+    proposal_responses.find_by(user:)
+  end
+
+  def accepted?
+    proposal_responses.all? { |response| response.accepted? }
+  end
 end

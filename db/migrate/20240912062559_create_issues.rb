@@ -8,7 +8,6 @@ class CreateIssues < ActiveRecord::Migration[7.0]
       t.text :ideal_outcome
       t.text :acceptable_outcome
       t.integer :status, default: 'pending'
-      t.text :offer
       t.references :conflict, null: false, foreign_key: true
 
       t.timestamps

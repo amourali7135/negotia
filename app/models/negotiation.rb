@@ -8,8 +8,9 @@ class Negotiation < ApplicationRecord
 
   has_many :messages, dependent: :destroy
   has_many :proposals, dependent: :destroy
-  # has_many :negotiation_issues, dependent: :destroy
-  # has_many :issues, through: :negotiation_issues
+  has_many :proposal_responses, through: :proposals
+  has_many :negotiation_issues, dependent: :destroy
+  has_many :issues, through: :negotiation_issues
 
   enum status: { pending: 0, in_progress: 1, resolved: 2, stalemate: 3, cancelled: 4 }
 
