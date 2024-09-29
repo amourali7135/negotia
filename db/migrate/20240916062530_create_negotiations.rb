@@ -6,7 +6,7 @@ class CreateNegotiations < ActiveRecord::Migration[7.0]
       t.references :user1, null: false, foreign_key: { to_table: :users }
       t.references :user2, null: false, foreign_key: { to_table: :users }
       t.references :conflict1, null: false, foreign_key: { to_table: :conflicts }
-      t.references :conflict2, null: false, foreign_key: { to_table: :conflicts }
+      t.references :conflict2, foreign_key: { to_table: :conflicts }
       t.references :initiator, null: false, foreign_key: { to_table: :users }
       t.integer :status, default: 0, null: false
       t.timestamps

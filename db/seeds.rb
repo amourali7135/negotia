@@ -110,6 +110,11 @@ end
 
 puts "Creating fake negotations..."
 negotiation = Negotiation.new(
-  status: , 
-
+  status: "pending", 
+  user1: User.first, 
+  user2:, User.second, 
+  conflict1: Conflict.first, 
+  conflict2: Conflict.second, 
+  iniator: User.first
  )
+negotiation.save!

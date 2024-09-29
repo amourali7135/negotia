@@ -8,12 +8,13 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = @negotiation.proposals.build(proposal_params)
-    @proposal.proposed_by = current_user
+    # @proposal.proposed_by = current_user
+    @proposal.user = current_user
 
     if @proposal.save
       redirect_to @negotiation, notice: 'Proposal was successfully created.'
     else
-      @issues = @negotiation.issues
+      # @issues = @negotiation.issues
       render :new, status: :unprocessable_entity
     end
   end

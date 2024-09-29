@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   # has_many :proposals, dependent: :destroy
   has_many :proposals, foreign_key: :proposed_by_id, dependent: :destroy
+  has_many :proposals, dependent: :destroy
   has_many :proposal_responses, dependent: :destroy
   has_many :messages
 

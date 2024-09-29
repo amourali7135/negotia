@@ -3,6 +3,7 @@ class Conflict < ApplicationRecord
   has_many :issues, dependent: :destroy
   has_many :negotiations_as_conflict1, class_name: 'Negotiation', foreign_key: 'conflict1_id'
   has_many :negotiations_as_conflict2, class_name: 'Negotiation', foreign_key: 'conflict2_id'
+  has_many :negotiations, dependent: :destroy
 
   enum priority: { lowest: 0, low: 1, ordinary: 2, high: 3, very_high: 4 }
   enum status: { pending: 0, in_progress: 1, completed: 2, stalemate: 3 }

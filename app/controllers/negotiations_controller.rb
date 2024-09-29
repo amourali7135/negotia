@@ -17,21 +17,24 @@ class NegotiationsController < ApplicationController
   def new
     @negotiation = Negotiation.new
     @user_conflicts = current_user.conflicts
-    @other_users = User.where.not(id: current_user.id)
+    @conflict = Conflict.find(params[:conflict_id])
+    # @other_users = User.where.not(id: current_user.id)
   end
 
   def create
     @negotiation = Negotiation.new(negotiation_params)
     @negotiation.user1 = current_user
-    @negotiation.initiator = current_user
+    # @negotiation.initiator = current_user
     @negotiation.status = :pending
 
     if @negotiation.save
       # Send invitation email here
+      # NegotiationMailer.invitation(@negotiation).deliver_later
       redirect_to @negotiation, notice: 'Negotiation was successfully initiated.'
     else
       @user_conflicts = current_user.conflicts
-      @other_users = User.where.not(id: current_user.id)
+      @conflict = Conflict.find(params[:conflict_id])
+      # @other_users = User.where.not(id: current_user.id)
       render :new, status: :unprocessable_entity
     end
   end
@@ -51,6 +54,33 @@ class NegotiationsController < ApplicationController
   def decline
     @negotiation.update(status: :cancelled)
     redirect_to negotiations_path, notice: 'Negotiation declined.'
+  end
+
+  def update
+    if (@negotiation.pending? && @negotiation.user1 == current_user) || @negotiation.user2 == current_user
+      @negotiation.update(status: :active)
+      redirect_to @negotiation, notice: 'Negotiation accepted.'
+    else
+      redirect_to @negotiation, alert: 'Unable to update negotiation.'
+    end
+  end
+
+  def cancel
+    if @negotiation.user1 == current_user || @negotiation.user2 == current_user
+      @negotiation.update(status: :cancelled)
+      redirect_to negotiations_path, notice: 'Negotiation cancelled.'
+    else
+      redirect_to @negotiation, alert: 'You are not authorized to cancel this negotiation.'
+    end
+  end
+
+  def resolve
+    @negotiation = Negotiation.find(params[:id])
+    if @negotiation.resolve(params[:resolution_notes])
+      redirect_to @negotiation, notice: 'Negotiation successfully resolved.'
+    else
+      render :show
+    end
   end
 
   private

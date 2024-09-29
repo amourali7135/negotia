@@ -2,6 +2,7 @@ class ProposalresponsesController < ApplicationController
   before_action :set_proposal
 
   def new
+    
   end
 
   def create
