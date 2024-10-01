@@ -2,28 +2,28 @@ class IssuesController < ApplicationController
   before_action :set_conflict
   before_action :set_issue, only: %i[show edit update destroy]
 
-  def index
-    @issues = @conflict.issues
-  end
+  # def index
+  #   @issues = @conflict.issues
+  # end
 
   def show
   end
 
   def new
-    @conflict = Conflict.find(params[:conflict_id])
+    # @conflict = Conflict.find(params[:conflict_id])
     @issue = Issue.new
   end
 
   def create
     @issue = Issue.new(issue_params)
     @issue.conflict = @conflict
+    # or
+    # @issue = @conflict.issues.build(issue_params)
     if @issue.save
       redirect_to conflict_issue_index(@conflict, @issue), notice: 'Issue was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
-
-    redirect_to restaurant_path(@restaurant)
   end
 
   def edit
@@ -55,6 +55,6 @@ class IssuesController < ApplicationController
 
   def issue_params
     params.require(:issue).permit(:title, :priority, :compromise, :explanation, :ideal_outcome, :acceptable_outcome,
-                                  :status, :offer)
+                                  :status)
   end
 end

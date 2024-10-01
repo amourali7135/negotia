@@ -9,7 +9,6 @@ class Negotiation < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :proposals, dependent: :destroy
   has_many :proposal_responses, through: :proposals
-  # has_many :negotiation_issues, dependent: :destroy
   # has_many :issues, through: :negotiation_issues
   has_and_belongs_to_many :issues
 
@@ -72,4 +71,25 @@ class Negotiation < ApplicationRecord
       conflict2.update!(status: 'resolved', resolution_notes:)
     end
   end
+
+  # def issue_summary(conflict)
+  #   return {} unless conflict
+
+  #   issues = conflict.issues.map do |issue|
+  #     status = negotiation_issue_statuses.find_by(issue:)&.status || 'not_in_negotiation'
+  #     {
+  #       title: issue.title,
+  #       description: issue.description,
+  #       severity: issue.severity,
+  #       original_status: issue.status,
+  #       negotiation_status: status
+  #     }
+  #   end
+
+  #   {
+  #     user: conflict.user.name,
+  #     conflict_title: conflict.title,
+  #     issues:
+  #   }
+  # end
 end

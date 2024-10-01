@@ -2,7 +2,6 @@ class ProposalresponsesController < ApplicationController
   before_action :set_proposal
 
   def new
-    
   end
 
   def create
@@ -10,9 +9,9 @@ class ProposalresponsesController < ApplicationController
     @proposal_response.user = current_user
 
     if @proposal_response.save
-      redirect_to negotiation_path(@proposal.negotiation), notice: 'Response submitted successfully.'
+      redirect_to negotiation_path(@proposal.negotiation), notice: 'Proposal proposed successfully.'
     else
-      redirect_to negotiation_path(@proposal.negotiation), alert: 'Failed to submit response.'
+      redirect_to negotiation_path(@proposal.negotiation), alert: 'Failed to submit proposal.'
     end
   end
 

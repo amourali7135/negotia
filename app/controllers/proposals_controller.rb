@@ -12,7 +12,7 @@ class ProposalsController < ApplicationController
     @proposal.user = current_user
 
     if @proposal.save
-      redirect_to @negotiation, notice: 'Proposal was successfully created.'
+      redirect_to @negotiation, notice: 'Proposal was successfully proposed.'
     else
       # @issues = @negotiation.issues
       render :new, status: :unprocessable_entity
@@ -26,6 +26,6 @@ class ProposalsController < ApplicationController
   end
 
   def proposal_params
-    params.require(:proposal).permit(:content, :issue_id)
+    params.require(:proposal).permit(:content, :issue_id, :negotiation_id)
   end
 end
