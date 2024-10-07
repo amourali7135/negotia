@@ -156,6 +156,7 @@ GEM
     faker (3.0.0)
       i18n (>= 1.8.11, < 2)
     ffi (1.17.0)
+    ffi (1.17.0-arm64-darwin)
     font-awesome-sass (6.5.2)
       sassc (~> 2.0)
     get_process_mem (0.2.7)
