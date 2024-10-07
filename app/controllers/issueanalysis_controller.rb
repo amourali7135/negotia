@@ -1,0 +1,2 @@
+class IssueanalysisController < ApplicationController
+end

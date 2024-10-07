@@ -1,0 +1,2 @@
+class Practicesession < ApplicationRecord
+end
