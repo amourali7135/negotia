@@ -29,24 +29,12 @@
 # #   end
 # # end
 
-# class AddUsersToNegotiations < ActiveRecord::Migration[7.0]
-#   disable_ddl_transaction!
-
-#   def change
-#     add_reference :negotiations, :user1, null: false, index: {algorithm: :concurrently}
-#     add_reference :negotiations, :user2, null: false, index: {algorithm: :concurrently}
-#     add_reference :negotiations, :initiator, null: false, index: {algorithm: :concurrently}
-#   end
-# end
-
-class AddReferencesToProposals < ActiveRecord::Migration[7.0]
+class AddUsersToNegotiations < ActiveRecord::Migration[7.0]
   disable_ddl_transaction!
 
   def change
-    safety_assured do
-      add_reference :proposals, :negotiation, null: false, foreign_key: true, index: { algorithm: :concurrently }
-      add_reference :proposals, :proposed_by, null: false, foreign_key: { to_table: :users }, index: { algorithm: :concurrently }
-      add_reference :proposals, :issue, foreign_key: true, index: { algorithm: :concurrently }
-    end
+    add_reference :negotiations, :user1, null: false, index: {algorithm: :concurrently}
+    add_reference :negotiations, :user2, null: false, index: {algorithm: :concurrently}
+    add_reference :negotiations, :initiator, null: false, index: {algorithm: :concurrently}
   end
 end

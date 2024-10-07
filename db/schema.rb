@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_26_064130) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_07_174841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -107,36 +107,53 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_064130) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.bigint "negotiation_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "negotiation_id", null: false
+    t.bigint "user_id", null: false
     t.index ["negotiation_id"], name: "index_messages_on_negotiation_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "negotiations", force: :cascade do |t|
-    t.bigint "user1_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user1_id", null: false
+    t.bigint "user2_id", null: false
+    t.bigint "initiator_id", null: false
+    t.bigint "conflict1_id", null: false
+    t.bigint "conflict2_id", null: false
+    t.index ["conflict1_id"], name: "index_negotiations_on_conflict1_id"
+    t.index ["conflict2_id"], name: "index_negotiations_on_conflict2_id"
+    t.index ["initiator_id"], name: "index_negotiations_on_initiator_id"
     t.index ["user1_id"], name: "index_negotiations_on_user1_id"
+    t.index ["user2_id"], name: "index_negotiations_on_user2_id"
   end
 
   create_table "proposalresponses", force: :cascade do |t|
-    t.bigint "proposal_id", null: false
     t.string "status", null: false
     t.text "comment", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "proposal_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["proposal_id", "user_id"], name: "index_proposalresponses_on_proposal_id_and_user_id", unique: true
     t.index ["proposal_id"], name: "index_proposalresponses_on_proposal_id"
+    t.index ["user_id"], name: "index_proposalresponses_on_user_id"
   end
 
   create_table "proposals", force: :cascade do |t|
-    t.bigint "negotiation_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "negotiation_id", null: false
+    t.bigint "proposed_by_id", null: false
+    t.bigint "issue_id"
+    t.index ["issue_id"], name: "index_proposals_on_issue_id"
     t.index ["negotiation_id"], name: "index_proposals_on_negotiation_id"
+    t.index ["proposed_by_id"], name: "index_proposals_on_proposed_by_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -158,7 +175,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_064130) do
   add_foreign_key "conflicts", "users"
   add_foreign_key "issues", "conflicts"
   add_foreign_key "messages", "negotiations"
+  add_foreign_key "messages", "users"
+  add_foreign_key "negotiations", "conflicts", column: "conflict1_id"
+  add_foreign_key "negotiations", "conflicts", column: "conflict2_id"
+  add_foreign_key "negotiations", "users", column: "initiator_id"
   add_foreign_key "negotiations", "users", column: "user1_id"
+  add_foreign_key "negotiations", "users", column: "user2_id"
   add_foreign_key "proposalresponses", "proposals"
+  add_foreign_key "proposalresponses", "users"
   add_foreign_key "proposals", "negotiations"
+  add_foreign_key "proposals", "users", column: "proposed_by_id"
 end
