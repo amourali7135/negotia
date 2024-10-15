@@ -9,10 +9,10 @@ class Issue < ApplicationRecord
   validates :title, presence: true
   validates :status, presence: true
   validates :priority, presence: true
-  validates :compromise, presence: true
+  # validates :compromise, presence: true
   validates :explanation, presence: true, length: { minimum: 3 }
-  validates :ideal_outcome, presence: true
-  validates :acceptable_outcome, presence: true
+  # validates :ideal_outcome, presence: true
+  # validates :acceptable_outcome, presence: true
 
   scope :by_priority, -> { order(priority: :asc) }
   scope :by_status, ->(status) { where(status:) }

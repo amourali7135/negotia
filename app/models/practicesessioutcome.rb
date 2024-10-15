@@ -1,2 +1,0 @@
-class Practicesessioutcome < ApplicationRecord
-end

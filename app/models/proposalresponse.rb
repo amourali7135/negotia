@@ -1,4 +1,4 @@
-class Proposalresponse < ApplicationRecord
+class ProposalResponse < ApplicationRecord
   belongs_to :proposal
   belongs_to :user
 

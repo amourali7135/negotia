@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   resources :conflicts, except: [:index, ] do
     resources :issue, except: [:index, :show]
+    resources :practice_sessions, shallow: true do
+      resource :issue_analysis, only: [:show, :new, :create, :edit, :update] #       resources :practice_issues, only: [:show, :update]
+      resource :session_outcome, only: [:new, :create]
+    end
   end
 
   resources :negotiations, except: [:index] do 
