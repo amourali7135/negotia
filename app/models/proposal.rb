@@ -19,7 +19,7 @@ class Proposal < ApplicationRecord
   end
 
   def accepted?
-    proposal_responses.all? { |response| response.accepted? }
+    proposal_responses.any? && proposal_responses.all?(&:accepted?)
   end
 
   private
@@ -31,5 +31,4 @@ class Proposal < ApplicationRecord
   def all_parties_responded?
     proposal_responses.count == negotiation.users.count - 1  # Excluding the proposer
   end
-
 end

@@ -9,12 +9,13 @@ class IssueAnalysis < ApplicationRecord
   validates :practice_session, :issue, presence: true
   validates :satisfaction_level, inclusion: { in: 1..10 }, allow_nil: true
   validates :status, :importance, :difficulty, presence: true
+  validates :issue, presence: true
 
   scope :addressed, -> { where(status: :addressed) }
   scope :pending, -> { where(status: :pending) }
   scope :skipped, -> { where(status: :skipped) }
 
-  #Added an address! method to mark an issue as addressed and set the satisfaction level.
+  # Added an address! method to mark an issue as addressed and set the satisfaction level.
   def address!(satisfaction_level)
     update!(status: :addressed, satisfaction_level:)
   end

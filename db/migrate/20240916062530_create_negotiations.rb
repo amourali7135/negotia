@@ -8,6 +8,7 @@ class CreateNegotiations < ActiveRecord::Migration[7.0]
       # t.references :conflict2, foreign_key: { to_table: :conflicts }
       # t.references :initiator, null: false, foreign_key: { to_table: :users }
       t.integer :status, default: 0, null: false, default: 'pending'
+      #Add resolved at 
       t.timestamps
     end
   end

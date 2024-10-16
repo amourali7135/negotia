@@ -8,6 +8,7 @@ class PracticeSession < ApplicationRecord
 
   validates :conflict, :user, presence: true
   validates :status, presence: true
+  validates :user, presence: true
 
   scope :in_progress, -> { where(status: :in_progress) }
   scope :completed, -> { where(status: :completed) }

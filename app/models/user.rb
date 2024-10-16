@@ -14,7 +14,7 @@ class User < ApplicationRecord
   # has_many :proposals, dependent: :destroy
   has_many :proposal_responses, dependent: :destroy
   has_many :practice_sessions, dependent: :destroy
-  has_many :practice_session_outcomes, through: :practice_sessions, dependent: :destroy
+  has_many :practice_session_outcomes, through: :practice_sessions
 
   # def all_negotiations
   #   Negotiation.where("user1_id = ? OR user2_id = ?", id, id)

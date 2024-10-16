@@ -37,12 +37,8 @@ class Negotiation < ApplicationRecord
 
   private
 
-  # def users_are_different
-  #   errors.add(:base, "Both users must be different users") if user1.user_id == user2.user_id
-  # end
-
   def users_are_different
-    errors.add(:base, "Both users must be different users") if user1_id == user2_id
+    errors.add(:base, "Both users must be different") if user1_id == user2_id
   end
 
   # def conflicts_belong_to_respective_users
@@ -54,7 +50,9 @@ class Negotiation < ApplicationRecord
 
   def conflicts_belong_to_respective_users
     errors.add(:conflict1, "must belong to User1") unless conflict1.user_id == user1_id
-    errors.add(:conflict2, "must belong to User2") if conflict2 && conflict2.user_id != user2_id
+    return unless conflict2 && conflict2.user_id != user2_id
+
+    errors.add(:conflict2, "must belong to User2")
   end
 
   def conflict_comparison
@@ -78,7 +76,7 @@ class Negotiation < ApplicationRecord
     transaction do
       update!(status: :resolved, resolved_at: Time.current)
       conflict1.update!(status: 'resolved', resolution_notes:)
-      conflict2.update!(status: 'resolved', resolution_notes:)
+      conflict2&.update!(status: 'resolved', resolution_notes:) # Safe navigation operator
     end
   end
 
