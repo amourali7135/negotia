@@ -5,7 +5,8 @@ class CreateConflicts < ActiveRecord::Migration[7.0]
       t.text :problem
       t.integer :status, default: 'pending'
       t.string :opponent
-      t.integer :priority, default: 'pending'
+      t.integer :priority, default: 'ordinary'
+      t.integer :conflict_type, default: 'personal'
       t.text :objective
       t.references :user, null: false, foreign_key: true
 

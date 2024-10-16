@@ -10,7 +10,7 @@ class Negotiation < ApplicationRecord
   has_many :proposals, dependent: :destroy
   has_many :proposal_responses, through: :proposals
   # has_many :issues, through: :negotiation_issues
-  has_and_belongs_to_many :issues
+  # has_and_belongs_to_many :issues
 
   enum status: { pending: 0, in_progress: 1, resolved: 2, stalemate: 3, cancelled: 4 }
 
@@ -18,6 +18,12 @@ class Negotiation < ApplicationRecord
   validates :user1, :user2, :conflict1, presence: true
   validate :users_are_different
   validate :conflicts_belong_to_respective_users
+  validate :status, presence: true
+
+  # You might want to add these methods to access issues indirectly
+  def issues
+    Issue.where(conflict: [conflict, conflict2].compact)
+  end
 
   scope :upcoming_deadline, ->(days) { where(deadline: Time.current..(Time.current + days.days)) }
 
@@ -25,22 +31,26 @@ class Negotiation < ApplicationRecord
     initiator == user
   end
 
-  def add_participant(user)
-    negotiation_participants.create(user:)
-  end
+  # def add_participant(user)
+  #   negotiation_participants.create(user:)
+  # end
 
   private
 
+  # def users_are_different
+  #   errors.add(:base, "Both users must be different users") if user1.user_id == user2.user_id
+  # end
+
   def users_are_different
-    errors.add(:base, "Both users must be different users") if user1.user_id == user2.user_id
+    errors.add(:base, "Both users must be different users") if user1_id == user2_id
   end
 
-  def conflicts_belong_to_respective_users
-    errors.add(:initiator_conflict, "must belong to the initiator") unless conflict1.user_id == user1.user_id
-    return if conflict2.user_id == user2.user_id
+  # def conflicts_belong_to_respective_users
+  #   errors.add(:initiator_conflict, "must belong to the initiator") unless conflict1.user_id == user1.user_id
+  #   return if conflict2.user_id == user2.user_id
 
-    errors.add(:respondent_conflict, "must belong to the respondent")
-  end
+  #   errors.add(:respondent_conflict, "must belong to the respondent")
+  # end
 
   def conflicts_belong_to_respective_users
     errors.add(:conflict1, "must belong to User1") unless conflict1.user_id == user1_id

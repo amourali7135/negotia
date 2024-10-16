@@ -9,13 +9,13 @@ Rails.application.routes.draw do
   
   mount Debugbar::Engine => Debugbar.config.prefix
 
-
-  resources :conflicts, except: [:index, ] do
-    resources :issue, except: [:index, :show]
+  resources :conflicts, except: [:index] do
+    resources :issues, except: [:index, :show]
     resources :practice_sessions, shallow: true do
-      resource :issue_analysis, only: [:show, :new, :create, :edit, :update] #       resources :practice_issues, only: [:show, :update]
-      resource :session_outcome, only: [:new, :create]
+      resources :issue_analyses, only: [:show, :new, :create, :edit, :update]
+      resource :practice_session_outcome, only: [:new, :create, :show]
     end
+    resources :negotiations, shallow: true
   end
 
   resources :negotiations, except: [:index] do 
@@ -23,7 +23,24 @@ Rails.application.routes.draw do
       resources :proposal_responses, only: [:create]
     end
     resources :messages, only: [:create]
+    resources :issues, only: [:index, :show]
   end
+
+  resources :proposals, only: [] do
+    resources :proposal_responses, only: [:create]
+  end
+
+  # User profile and dashboard routes
+  get 'profile', to: 'users#show'
+  get 'dashboard', to: 'dashboard#index'
+
+  # API routes if needed
+  # namespace :api do
+  #   namespace :v1 do
+  #     resources :conflicts, only: [:show, :create, :update]
+  #     resources :negotiations, only: [:show, :create, :update]
+  #   end
+  # end
 
 
   # resources :negotiations do

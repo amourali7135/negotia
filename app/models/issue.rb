@@ -1,6 +1,6 @@
 class Issue < ApplicationRecord
   belongs_to :conflict
-  has_and_belongs_to_many :negotiations
+  # has_and_belongs_to_many :negotiations
   has_many :proposals, dependent: :destroy
 
   enum priority: { lowest: 0, low: 1, ordinary: 2, high: 3, very_high: 4 }
