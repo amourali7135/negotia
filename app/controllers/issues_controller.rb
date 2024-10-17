@@ -2,39 +2,31 @@ class IssuesController < ApplicationController
   before_action :set_conflict
   before_action :set_issue, only: %i[show edit update destroy]
 
-  # def index
-  #   @issues = @conflict.issues
-  # end
-
   def show
   end
 
   def new
-    # @conflict = Conflict.find(params[:conflict_id])
-    @issue = Issue.new
+    @issue = @conflict.issues.new
   end
 
   def create
-    @issue = Issue.new(issue_params)
-    @issue.conflict = @conflict
-    # or
-    # @issue = @conflict.issues.build(issue_params)
+    @issue = @conflict.issues.build(issue_params)
+    @issue.user = current_user
     if @issue.save
-      redirect_to conflict_issue_index(@conflict, @issue), notice: 'Issue was successfully created.'
+      redirect_to conflict_issue_path(@conflict, @issue), notice: 'Issue was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @issue = Issue.find(params[:id])
   end
 
   def update
     if @issue.update(issue_params)
       redirect_to conflict_issue_path(@conflict, @issue), notice: 'Issue was successfully updated.'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -46,7 +38,7 @@ class IssuesController < ApplicationController
   private
 
   def set_conflict
-    @conflict = Conflict.find(params[:id])
+    @conflict = Conflict.find(params[:conflict_id])
   end
 
   def set_issue

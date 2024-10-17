@@ -2,20 +2,25 @@ class ConflictsController < ApplicationController
   before_action :set_conflict, only: %i[show edit update destroy]
 
   def index
-    @conflicts = Conflict.where(user_id: current_user.id)
+    @conflicts = current_user.conflicts
   end
 
   def show
-    @conflict = Conflict.find(params[:id])
-    @issues = @conflict.issues
+    @issues = @conflict.issues.includes(:user)
   end
 
   def new
-    @conflict = Conflict.new
+    @conflict = current_user.conflicts.new
   end
 
   def create
-    @conflict = Conflict.new(conflict_params)
+    # @conflict = Conflict.new(conflict_params)
+    # if @conflict.save
+    #   redirect_to @conflict, notice: 'Conflict was successfully created.'
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
+    @conflict = current_user.conflicts.new(conflict_params)
     if @conflict.save
       redirect_to @conflict, notice: 'Conflict was successfully created.'
     else
@@ -24,14 +29,13 @@ class ConflictsController < ApplicationController
   end
 
   def edit
-    @conflict = Conflict.find(params[:id])
   end
 
   def update
     if @conflict.update(conflict_params)
       redirect_to @conflict, notice: 'Conflict was successfully updated.'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -42,11 +46,16 @@ class ConflictsController < ApplicationController
 
   private
 
+  # def set_conflict
+  #   @conflict = Conflict.find(params[:id])
+  # end
   def set_conflict
-    @conflict = Conflict.find(params[:id])
+    @conflict = current_user.conflicts.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to conflicts_url, alert: 'Conflict not found.'
   end
 
   def conflict_params
-    params.require(:conflict).permit(:title, :problem, :status, :opponent, :priority, :objective)
+    params.require(:conflict).permit(:title, :problem, :status, :opponent, :priority, :objective, :conflict_type)
   end
 end

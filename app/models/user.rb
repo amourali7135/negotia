@@ -16,6 +16,11 @@ class User < ApplicationRecord
   has_many :practice_sessions, dependent: :destroy
   has_many :practice_session_outcomes, through: :practice_sessions
 
+  # Claude rec.  Get back when needed.
+  # has_many :initiated_negotiations, class_name: 'Negotiation', foreign_key: 'user1_id'
+  # has_many :received_negotiations, class_name: 'Negotiation', foreign_key: 'user2_id'
+  # has_many :negotiations, -> { distinct }, through: :conflicts
+
   # def all_negotiations
   #   Negotiation.where("user1_id = ? OR user2_id = ?", id, id)
   # end

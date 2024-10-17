@@ -1,0 +1,15 @@
+<%# From ChatGPT for the invites initially, refactor it in properly later %>
+<%= form_with model: @negotiation do |form| %>
+  <!-- Other fields -->
+  <div>
+    <%= form.label :user2_name %>
+    <%= form.text_field :user2_name %>
+  </div>
+
+  <div>
+    <%= form.label :user2_email %>
+    <%= form.email_field :user2_email %>
+  </div>
+
+  <%= form.submit "Create Negotiation" %>
+<% end %>

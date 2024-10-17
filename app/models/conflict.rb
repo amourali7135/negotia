@@ -14,7 +14,7 @@ class Conflict < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3 }
   validates :problem, presence: true, length: { minimum: 3 }
   validates :status, presence: true
-  validates :opponent, presence: true
+  validates :opponent, presence: true, length: { minimum: 3 }
   validates :priority, presence: true
   validates :objective, presence: true
   validates :conflict_type, presence: true
