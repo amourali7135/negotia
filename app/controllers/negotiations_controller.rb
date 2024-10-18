@@ -10,10 +10,14 @@ class NegotiationsController < ApplicationController
 
   def show
     # @negotiation = Negotiation.includes(:issues, proposals: %i[proposed_by issue]).find(params[:id]) GPT
-    @negotiation = @negotiation.includes(:issues, proposals: %i[proposed_by issue]) # Claude
+    # @negotiation = @negotiation.includes(:issues, proposals: %i[proposed_by issue]) # Claude
+    @negotiation = Negotiation.includes(conflict1: :issues, conflict2: :issues).find(params[:id])
     @messages = @negotiation.messages.order(created_at: :asc)
     @message = Message.new
     @proposals = @negotiation.proposals.order(created_at: :desc)
+    @user1_issues = @negotiation.user1_issues
+    @user2_issues = @negotiation.user2_issues
+    @all_issues = @negotiation.all_issues
   end
 
   def new

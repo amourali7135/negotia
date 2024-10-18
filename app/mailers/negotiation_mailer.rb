@@ -15,3 +15,16 @@ class NegotiationMailer < ApplicationMailer
     Base64.urlsafe_encode64(negotiation.id.to_s)
   end
 end
+
+# class NegotiationMailer < ApplicationMailer
+#   def invitation(negotiation_id)
+#     @negotiation = Negotiation.find(negotiation_id)
+#     @inviter = @negotiation.user1
+#     @invitee_email = @negotiation.user2_email
+
+#     mail(
+#       to: @invitee_email,
+#       subject: "You've been invited to a negotiation by #{@inviter.name}"
+#     )
+#   end
+# end

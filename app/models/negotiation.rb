@@ -1,7 +1,7 @@
 class Negotiation < ApplicationRecord
   # For now I'll force users to register and fill in their conflict information.  For later, I'll make it optional with a big warning before they enter.
   belongs_to :user1, class_name: 'User'
-  belongs_to :user2, class_name: 'User'
+  belongs_to :user2, class_name: 'User' # , optional: true
   belongs_to :conflict1, class_name: 'Conflict'
   belongs_to :conflict2, class_name: 'Conflict', optional: true
 
@@ -19,10 +19,24 @@ class Negotiation < ApplicationRecord
   validate :user2_email_matches_user2
 
   before_save :set_resolved_at, if: :resolved?
+  #  Claude is terrifying, Jesus Christ. "The Negotiation model includes validations for user2_email and user2_name. It also has an after_create callback to set user2 if a matching user is found in the database."
+  after_create :set_user2
 
   # You might want to add these methods to access issues indirectly
-  def issues
-    Issue.where(conflict: [conflict, conflict2].compact)
+  # def issues
+  #   Issue.where(conflict: [conflict, conflict2].compact)
+  # end
+
+  def user1_issues
+    Issue.where(conflict: conflict1)
+  end
+
+  def user2_issues
+    conflict2.present? ? Issue.where(conflict: conflict2) : Issue.none
+  end
+
+  def all_issues
+    Issue.where(conflict: [conflict1, conflict2].compact).distinct
   end
 
   scope :upcoming_deadline, ->(days) { where(deadline: Time.current..(Time.current + days.days)) }
@@ -81,6 +95,11 @@ class Negotiation < ApplicationRecord
 
   def other_user(user)
     user == user1 ? user2 : user1
+  end
+
+  def set_user2
+    self.user2 = User.find_by(email: user2_email)
+    save
   end
 
   # def issue_summary(conflict)

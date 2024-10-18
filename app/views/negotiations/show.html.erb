@@ -1,0 +1,22 @@
+
+<%#Claude generated template  %>
+<h2>Issues for <%= @negotiation.user1.name %></h2>
+<ul>
+  <% @user1_issues.each do |issue| %>
+    <li><%= issue.title %></li>
+  <% end %>
+</ul>
+
+<h2>Issues for <%= @negotiation.user2.name %></h2>
+<ul>
+  <% @user2_issues.each do |issue| %>
+    <li><%= issue.title %></li>
+  <% end %>
+</ul>
+
+<h2>All Issues in this Negotiation</h2>
+<ul>
+  <% @all_issues.each do |issue| %>
+    <li><%= issue.title %></li>
+  <% end %>
+</ul>
