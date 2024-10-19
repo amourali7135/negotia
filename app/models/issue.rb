@@ -2,8 +2,8 @@ class Issue < ApplicationRecord
   belongs_to :conflict
   has_many :proposals, dependent: :destroy
 
-  enum priority: { low: 0, average: 1, high: 2, critical: 3 }
-  enum status: { pending: 0, in_progress: 1, resolved: 2 }
+  enum priority: { low: 0, average: 1, high: 2, critical: 3 }, _prefix: true
+  enum status: { pending: 0, in_progress: 1, resolved: 2 }, _prefix: true
 
   validates :title, presence: true, uniqueness: { scope: :conflict_id }
   validates :status, presence: true

@@ -1,18 +1,32 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => 'fuckyouhackerz', as: 'rails_admin'
-  devise_for :users
-  root to: "pages#home"
-  
+
+  # Admin routes
   authenticate :user, -> (user) { user.admin? } do
     mount PgHero::Engine, at: "pghero"
+    mount RailsAdmin::Engine => 'fuckyouhackerz', as: 'rails_admin' #Genius relocation here
   end
   
-  mount Debugbar::Engine => Debugbar.config.prefix
+  # User authentication
+  devise_for :users
+  
+  # Root route
+  root to: "pages#home"
+  
+  
+  # Debugging (consider removing in production)  BRO CLAUDE TOLD ME TO MAKE SURE IT IS IN DEV ONLY!  BLOODY HELL!  
+  if Rails.env.development? || Rails.env.test?
+    mount Debugbar::Engine => Debugbar.config.prefix
+  end
 
   resources :conflicts, except: [:index] do
     resources :issues, except: [:index, :show]
     resources :practice_sessions, shallow: true do
-      resources :issue_analyses, only: [:show, :new, :create, :edit, :update]
+      resources :issue_analyses, except: [:index, :destroy] do
+        member do
+          post :address
+          post :skip
+        end
+      end
       resource :practice_session_outcome, only: [:new, :create, :show]
     end
     resources :negotiations, shallow: true

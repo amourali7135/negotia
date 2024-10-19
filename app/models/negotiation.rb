@@ -9,7 +9,7 @@ class Negotiation < ApplicationRecord
   has_many :proposals, dependent: :destroy
   has_many :proposal_responses, through: :proposals
 
-  enum status: { pending: 0, in_progress: 1, resolved: 2, stalemate: 3, cancelled: 4 }
+  enum status: { pending: 0, in_progress: 1, resolved: 2, stalemate: 3, cancelled: 4 }, _prefix: true
 
   validates :user1, :user2, :conflict1, :status, presence: true
   validate :users_are_different

@@ -7,9 +7,9 @@ class Conflict < ApplicationRecord
   has_many :practice_sessions, dependent: :destroy
   has_many :practice_session_outcomes, dependent: :destroy
 
-  enum priority: { lowest: 0, low: 1, ordinary: 2, high: 3, very_high: 4 }
-  enum status: { pending: 0, in_progress: 1, completed: 2, stalemate: 3 }
-  enum conflict_type: { personal: 0, professional: 1, legal: 2, other: 3 }
+  enum priority: { lowest: 0, low: 1, ordinary: 2, high: 3, very_high: 4 }, _prefix: true
+  enum status: { pending: 0, in_progress: 1, completed: 2, stalemate: 3 }, _prefix: true
+  enum conflict_type: { personal: 0, professional: 1, legal: 2, other: 3 }, _prefix: true
 
   validates :title, presence: true, length: { minimum: 3 }
   validates :problem, presence: true, length: { minimum: 3 }

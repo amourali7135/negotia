@@ -8,7 +8,7 @@ class ProposalResponse < ApplicationRecord
   validate :user_is_part_of_negotiation
   validate :user_is_not_proposal_creator
 
-  enum status: { accepted: 0, rejected: 1, countered: 2 }
+  enum status: { accepted: 0, rejected: 1, countered: 2 }, _prefix: true
 
   after_save :update_proposal_status
 
