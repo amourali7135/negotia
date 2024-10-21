@@ -1,0 +1,8 @@
+<%# Claude format rec for later  %>
+<%= simple_form_for @practice_session_outcome do |f| %>
+  <%= f.input :overall_result, as: :radio_buttons, collection: PracticeSessionOutcome.overall_results.keys.map { |result| [result.titleize, result] } %>
+  <%= f.input :satisfaction_level, as: :integer, input_html: { min: 1, max: 10 } %>
+  <%= f.input :lessons_learned %>
+  <%= f.input :next_steps %>
+  <%= f.button :submit %>
+<% end %>

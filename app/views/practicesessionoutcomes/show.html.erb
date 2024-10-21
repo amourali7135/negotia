@@ -1,0 +1,17 @@
+<%#  CLaude rec format  %>
+<h1>Practice Session Outcome</h1>
+
+<p>Overall Result: <%= @practice_session_outcome.overall_result.titleize %></p>
+<p>Satisfaction Level: <%= @practice_session_outcome.satisfaction_level %>/10</p>
+
+<% if @practice_session_outcome.successful? %>
+  <p class="success">This was a successful practice session!</p>
+<% elsif @practice_session_outcome.needs_improvement? %>
+  <p class="warning">There's room for improvement in this practice session.</p>
+<% end %>
+
+<h2>Lessons Learned</h2>
+<p><%= @practice_session_outcome.lessons_learned %></p>
+
+<h2>Next Steps</h2>
+<p><%= @practice_session_outcome.next_steps %></p>

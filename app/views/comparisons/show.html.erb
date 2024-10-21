@@ -1,0 +1,31 @@
+<%# CLaude rec view format  %>
+<h1>Practice Session Outcomes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Overall Result</th>
+      <th>Satisfaction</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @practice_session_outcomes.each do |outcome| %>
+      <tr>
+        <td><%= outcome.created_at.to_date %></td>
+        <td><%= outcome.overall_result.titleize %></td>
+        <td><%= outcome.satisfaction_level %>/10</td>
+        <td>
+          <% if outcome.successful? %>
+            <span class="badge success">Successful</span>
+          <% elsif outcome.needs_improvement? %>
+            <span class="badge warning">Needs Improvement</span>
+          <% else %>
+            <span class="badge neutral">Neutral</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
