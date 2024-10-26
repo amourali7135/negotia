@@ -44,6 +44,15 @@ Rails.application.routes.draw do
     resources :proposal_responses, only: [:create]
   end
 
+  resources :notifications, only: [:index] do
+    member do
+      post :mark_as_read
+    end
+    collection do
+      post :mark_all_as_read
+    end
+  end
+
   # User profile and dashboard routes
   get 'profile', to: 'users#show'
   get 'dashboard', to: 'dashboard#index'

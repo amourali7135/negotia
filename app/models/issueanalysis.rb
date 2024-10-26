@@ -7,7 +7,8 @@ class IssueAnalysis < ApplicationRecord
   enum difficulty: { easy: 0, moderate: 1, challenging: 2, very_difficult: 3 }, _prefix: true
   enum satisfaction_level: { moderate: 0, low: 1, high: 2, perfect: 3 }, _prefix: true
 
-  validates :practice_session, :issue, presence: true
+  validates :practice_session, :issue, :alternative_solutions, :possible_solutions, :best_alternative,
+            :worst_alternative, :desired_outcome, :minimum_acceptable_outcome, :ideal_outcome, :expected_outcome, presence: true
   validates :satisfaction_level, inclusion: { in: satisfaction_levels.keys }, allow_nil: true
   validates :status, :importance, :difficulty, presence: true
   validate :issue_belongs_to_practice_session_conflict

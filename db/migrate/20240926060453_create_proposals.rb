@@ -5,7 +5,8 @@ class CreateProposals < ActiveRecord::Migration[7.0]
       # t.references :proposed_by, null: false, foreign_key: { to_table: :users }
       # t.references :issue, foreign_key: true
       t.text :content, null: false
-      t.integer :status, default: 0, null: false, default: 'pending'
+      t.integer :status, null: false, default: 0
+      t.integer :proposal_responses_count, default: 0, null: false
       t.timestamps
     end
   end

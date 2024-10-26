@@ -1,0 +1,26 @@
+# Claude generated
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello <%= @recipient.name %>,</h1>
+    <p>
+      <%= @responder.name %> has <%= @proposal_response.status %> your proposal
+      in negotiation #<%= @proposal.negotiation.id %>.
+    </p>
+    
+    <% if @proposal_response.comment.present? %>
+      <p>Their comment:</p>
+      <blockquote>
+        <%= @proposal_response.comment %>
+      </blockquote>
+    <% end %>
+    
+    <p>
+      Click here to view the response: 
+      <%= link_to 'View Response', negotiation_proposal_url(@proposal.negotiation, @proposal) %>
+    </p>
+  </body>
+</html>

@@ -6,15 +6,14 @@ class User < ApplicationRecord
 
   has_many :conflicts, dependent: :destroy
   has_many :issues, through: :conflicts, dependent: :destroy
-  # has_many :negotiations, dependent: :destroy
   has_many :negotiations_as_user1, class_name: 'Negotiation', foreign_key: 'user1_id'
   has_many :negotiations_as_user2, class_name: 'Negotiation', foreign_key: 'user2_id'
   has_many :messages, dependent: :destroy
   has_many :proposals, foreign_key: :proposed_by_id, dependent: :destroy
-  # has_many :proposals, dependent: :destroy
   has_many :proposal_responses, dependent: :destroy
   has_many :practice_sessions, dependent: :destroy
   has_many :practice_session_outcomes, through: :practice_sessions
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
 
   # Claude rec.  Get back when needed.
   # has_many :initiated_negotiations, class_name: 'Negotiation', foreign_key: 'user1_id'

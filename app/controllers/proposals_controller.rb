@@ -1,5 +1,6 @@
 class ProposalsController < ApplicationController
   before_action :set_negotiation
+  # before_action :ensure_negotiation_participant
 
   def new
     @proposal = @negotiation.proposals.build
@@ -8,13 +9,14 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = @negotiation.proposals.build(proposal_params)
-    # @proposal.proposed_by = current_user
-    @proposal.user = current_user
+    # Which one of these two?  Figure it out asap.
+    @proposal.proposed_by = current_user
+    # @proposal.user = current_user
 
     if @proposal.save
-      redirect_to @negotiation, notice: 'Proposal was successfully proposed.'
+      redirect_to @negotiation, notice: 'Proposal was successfully created.'
     else
-      # @issues = @negotiation.issues
+      @issues = @negotiation.issues
       render :new, status: :unprocessable_entity
     end
   end

@@ -14,12 +14,6 @@ class ConflictsController < ApplicationController
   end
 
   def create
-    # @conflict = Conflict.new(conflict_params)
-    # if @conflict.save
-    #   redirect_to @conflict, notice: 'Conflict was successfully created.'
-    # else
-    #   render :new, status: :unprocessable_entity
-    # end
     @conflict = current_user.conflicts.new(conflict_params)
     if @conflict.save
       redirect_to @conflict, notice: 'Conflict was successfully created.'
@@ -46,9 +40,6 @@ class ConflictsController < ApplicationController
 
   private
 
-  # def set_conflict
-  #   @conflict = Conflict.find(params[:id])
-  # end
   def set_conflict
     @conflict = current_user.conflicts.find(params[:id])
   rescue ActiveRecord::RecordNotFound
