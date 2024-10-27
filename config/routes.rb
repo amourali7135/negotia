@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   
   
   # Debugging (consider removing in production)  BRO CLAUDE TOLD ME TO MAKE SURE IT IS IN DEV ONLY!  BLOODY HELL!  
-  if Rails.env.development? || Rails.env.test?
+  if Rails.env.development? 
     mount Debugbar::Engine => Debugbar.config.prefix
   end
 
@@ -34,14 +34,14 @@ Rails.application.routes.draw do
 
   resources :negotiations, except: [:index] do 
     resources :proposals, only: [:new, :create, :show] do
-      resources :proposal_responses, only: [:create]
+      resources :proposal_responses, only: [:create], shallow: true
     end
     resources :messages, only: [:create]
     resources :issues, only: [:index, :show]
   end
 
   resources :proposals, only: [] do
-    resources :proposal_responses, only: [:create]
+    resources :proposal_responses, only: [:create], shallow: true
   end
 
   resources :notifications, only: [:index] do

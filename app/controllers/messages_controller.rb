@@ -9,7 +9,9 @@ class MessagesController < ApplicationController
     if @message.save
       redirect_to @negotiation, notice: 'Message was successfully sent.'
     else
-      redirect_to @negotiation, alert: 'Failed to send message.'
+      # redirect_to @negotiation, alert: 'Failed to send message.'
+      flash.now[:alert] = @message.errors.full_messages.to_sentence
+      render 'negotiations/show'
     end
   end
 
@@ -17,6 +19,8 @@ class MessagesController < ApplicationController
 
   def set_negotiation
     @negotiation = Negotiation.find(params[:negotiation_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: 'Negotiation not found.'
   end
 
   def message_params

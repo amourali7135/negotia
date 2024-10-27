@@ -3,6 +3,7 @@ class PracticeSession < ApplicationRecord
   belongs_to :user
   has_many :issue_analyses, dependent: :destroy
   has_one :practice_session_outcome, dependent: :destroy
+  accepts_nested_attributes_for :issue_analyses # My experiment, let's see if it works
 
   enum status: { pending: 0, in_progress: 1, completed: 2 }, _prefix: true
 

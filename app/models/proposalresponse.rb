@@ -1,35 +1,45 @@
 class ProposalResponse < ApplicationRecord
   belongs_to :proposal
   belongs_to :user
-  delegate :proposed_by, to: :proposal
-  delegate :negotiation, to: :proposal  # This provides a clean way to access the negotiation through the proposal while being more efficient than creating an Active Record association. You can still use it the same way:
+
+  # This provides a clean way to access the negotiation through the proposal while being more efficient than creating an Active Record association. You can still use it the same way:
+  delegate :proposed_by, :negotiation, to: :proposal
+
+  enum status: { accepted: 0, rejected: 1, countered: 2 }, _prefix: true
 
   validates :status, presence: true
   validates :user_id, uniqueness: { scope: :proposal_id, message: "has already responded to this proposal" }
-  validates :comment, presence: true, length: { minimum: 1, maximum: 1000 }
+  validates :comment, presence: true, length: { minimum: 1, maximum: 1000 },
+                      if: :comment_required?
   validate :user_is_part_of_negotiation
   validate :user_is_not_proposal_creator
   validate :proposal_is_still_pending, on: :create
 
-  enum status: { accepted: 0, rejected: 1, countered: 2 }, _prefix: true
-
-  after_save :update_proposal_status
-  after_create :notify_proposal_creator
-  after_create :send_email_notification
+  after_save :update_proposal_status, if: :saved_change_to_status?
+  after_create :notify_and_broadcast_response
 
   scope :accepted, -> { where(status: :accepted) }
   scope :rejected, -> { where(status: :rejected) }
   scope :countered, -> { where(status: :countered) }
+  scope :by_user, ->(user) { where(user:) }
+  scope :for_proposal, ->(proposal) { where(proposal:) }
 
   def can_be_modified?
-    proposal.status_pending?
+    proposal.status_pending? && !proposal.expired?
   end
 
   private
 
+  def notify_and_broadcast_response
+    notify_proposal_creator
+    send_email_notification
+    broadcast_notification
+  end
+
   def notify_proposal_creator
-    Notification.create(
-      recipient: proposal.proposed_by,
+    Notification.create!(
+      recipient: proposed_by,
+      sender: user,
       action: notification_action,
       notifiable: self,
       status: :unread
@@ -48,29 +58,38 @@ class ProposalResponse < ApplicationRecord
     ProposalMailer.response_notification(self).deliver_later
   end
 
+  def broadcast_notification
+    NotificationChannel.broadcast_to(
+      proposed_by,
+      {
+        notification_html: notification_partial,
+        message: "#{user.name} #{notification_action}",
+        notification_id: id
+      }
+    )
+  end
+
   def update_proposal_status
     return unless proposal.all_parties_responded?
 
-    new_status = determine_proposal_status
-    proposal.update(status: new_status)
+    proposal.update!(status: determine_proposal_status)
   end
 
   def determine_proposal_status
-    if all_responses_accepted?
+    if proposal.proposal_responses.all?(&:status_accepted?)
       :accepted
-    elsif any_responses_rejected?
+    elsif proposal.proposal_responses.any?(&:status_rejected?)
       :rejected
     else
       :countered
     end
   end
 
-  def all_responses_accepted?
-    proposal.proposal_responses.all?(&:accepted?)
-  end
-
-  def any_responses_rejected?
-    proposal.proposal_responses.any?(&:rejected?)
+  def notification_partial
+    ApplicationController.renderer.render(
+      partial: 'notifications/notification',
+      locals: { notification: self }
+    )
   end
 
   def user_is_part_of_negotiation
@@ -86,8 +105,12 @@ class ProposalResponse < ApplicationRecord
   end
 
   def proposal_is_still_pending
-    return if proposal.status_pending?
+    return if proposal.status_pending? && !proposal.expired?
 
-    errors.add(:base, "cannot respond to a proposal that is no longer pending")
+    errors.add(:base, "cannot respond to a proposal that is no longer pending or has expired")
+  end
+
+  def comment_required?
+    status_rejected? || status_countered?
   end
 end

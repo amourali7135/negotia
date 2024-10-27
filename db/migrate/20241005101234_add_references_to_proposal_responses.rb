@@ -14,8 +14,8 @@ class AddReferencesToProposalResponses < ActiveRecord::Migration[7.0]
 
   def change
     # Add references with indexes
-    add_reference :proposalresponses, :proposal, null: false, index: { algorithm: :concurrently }
-    add_reference :proposalresponses, :user, null: false, index: { algorithm: :concurrently }
+    add_reference :proposal_responses, :proposal, null: false, index: { algorithm: :concurrently }
+    add_reference :proposal_responses, :user, null: false, index: { algorithm: :concurrently }
 
     # Add unique index for combined columns
     add_index :proposalresponses, [:proposal_id, :user_id], unique: true, algorithm: :concurrently

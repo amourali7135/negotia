@@ -9,7 +9,7 @@ class IssueAnalysis < ApplicationRecord
 
   validates :practice_session, :issue, :alternative_solutions, :possible_solutions, :best_alternative,
             :worst_alternative, :desired_outcome, :minimum_acceptable_outcome, :ideal_outcome, :expected_outcome, presence: true
-  validates :satisfaction_level, inclusion: { in: satisfaction_levels.keys }, allow_nil: true
+  # validates :satisfaction_level, inclusion: { in: satisfaction_levels.keys }, allow_nil: true
   validates :status, :importance, :difficulty, presence: true
   validate :issue_belongs_to_practice_session_conflict
 
@@ -19,7 +19,10 @@ class IssueAnalysis < ApplicationRecord
 
   # Added an address! method to mark an issue as addressed and set the satisfaction level.
   def address!(satisfaction_level)
-    raise ArgumentError, "Invalid satisfaction level" unless satisfaction_levels.values.include?(satisfaction_level)
+    unless satisfaction_levels.key?(satisfaction_level.to_s)
+      errors.add(:satisfaction_level, "is invalid")
+      return false
+    end
 
     transaction do
       update!(status: :addressed, satisfaction_level:)

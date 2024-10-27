@@ -1,0 +1,23 @@
+<%# Claude rec template  %>
+
+# app/views/notifications/_notification.html.erb
+<div class="notification <%= notification.status %>">
+  <div class="notification-avatar">
+    <%= image_tag notification.sender.avatar_url if notification.sender.avatar.attached? %>
+  </div>
+  
+  <div class="notification-content">
+    <strong><%= notification.sender.name %></strong>
+    <%= notification.action %>
+    <span class="notification-time">
+      <%= time_ago_in_words(notification.created_at) %> ago
+    </span>
+  </div>
+  
+  <% if notification.unread? %>
+    <%= button_to 'Mark as Read', 
+                  mark_as_read_notification_path(notification),
+                  method: :post,
+                  class: 'mark-read-button' %>
+  <% end %>
+</div>
