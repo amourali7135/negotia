@@ -18,6 +18,6 @@ class CreateNegotiations < ActiveRecord::Migration[7.0]
     add_index :negotiations, :deadline
     add_index :negotiations, :user2_email
     #If you plan to have a large number of negotiations, consider adding a unique constraint to prevent duplicate negotiations between the same users for the same conflicts:
-    add_index :negotiations, [:user1_id, :user2_id, :conflict1_id, :conflict2_id], unique: true, name: 'index_negotiations_on_users_and_conflicts'
+    # add_index :negotiations, [:user1_id, :user2_id, :conflict1_id, :conflict2_id], unique: true, name: 'index_negotiations_on_users_and_conflicts'
   end
 end

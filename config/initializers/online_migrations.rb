@@ -2,7 +2,7 @@
 
 OnlineMigrations.configure do |config|
   # Configure the migration version starting after which checks are performed.
-  # config.start_after = 20241005101234
+  # config.start_after = 20241026055537
 
   # Configure statement timeout used for migrations.
   config.statement_timeout = 1.hour
