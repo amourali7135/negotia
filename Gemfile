@@ -61,7 +61,6 @@ gem 'faker'
 gem "rails_admin", "3.2"
 
 
-
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -96,8 +95,9 @@ group :development do
   gem 'derailed_benchmarks'
   gem "pghero"
   gem "rails-pg-extras"
-
   gem "rails_live_reload"
+
+  gem 'erb_lint', require: false
 
 end
 

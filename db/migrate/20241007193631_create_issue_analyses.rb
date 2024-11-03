@@ -18,11 +18,11 @@ class CreateIssueAnalyses < ActiveRecord::Migration[7.0]
       
       t.boolean :is_flexible, null: false, default: false
       
-      t.references :issue, null: false, foreign_key: true
-      t.references :practice_session, null: false, foreign_key: true
+      # t.references :issue, null: false, foreign_key: true
+      # t.references :practice_session, null: false, foreign_key: true
 
       t.timestamps
     end
-    add_index :issue_analyses, [:practice_session_id, :issue_id], unique: true
+    # add_index :issue_analyses, [:practice_session_id, :issue_id], unique: true
   end
 end

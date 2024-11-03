@@ -8,7 +8,7 @@ class CreateConflicts < ActiveRecord::Migration[7.0]
       t.integer :priority, default: 0, null: false
       t.integer :conflict_type, default: 0, null: false
       t.text :objective, null: false
-      t.references :user, null: false, foreign_key: true, index: true
+      # t.references :user, null: false, foreign_key: true, index: true
 
       t.timestamps
     end
@@ -18,3 +18,4 @@ class CreateConflicts < ActiveRecord::Migration[7.0]
     add_index :conflicts, :conflict_type
   end
 end
+

@@ -6,10 +6,10 @@ class CreatePracticeSessions < ActiveRecord::Migration[7.0]
       # t.text :notes
       t.integer :status, null: false, default: 0
       
-      t.references :user, null: false, foreign_key: true
-      t.references :conflict, null: false, foreign_key: true
+      # t.references :user, null: false, foreign_key: true
+      # t.references :conflict, null: false, foreign_key: true
       t.timestamps
     end
-    add_index :practice_sessions, [:user_id, :conflict_id]
+    # add_index :practice_sessions, [:user_id, :conflict_id]
   end
 end
