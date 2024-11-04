@@ -89,9 +89,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.text "objective", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["conflict_type"], name: "index_conflicts_on_conflict_type"
     t.index ["priority"], name: "index_conflicts_on_priority"
     t.index ["status"], name: "index_conflicts_on_status"
+    t.index ["user_id"], name: "index_conflicts_on_user_id"
   end
 
   create_table "issue_analyses", force: :cascade do |t|
@@ -204,6 +206,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
   add_foreign_key "background_migration_jobs", "background_migrations", column: "migration_id", on_delete: :cascade
   add_foreign_key "background_migrations", "background_migrations", column: "parent_id", on_delete: :cascade
   add_foreign_key "background_schema_migrations", "background_schema_migrations", column: "parent_id", on_delete: :cascade
+  add_foreign_key "conflicts", "users"
   add_foreign_key "messages", "negotiations"
   add_foreign_key "proposal_responses", "users"
 end
