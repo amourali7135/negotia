@@ -4,11 +4,11 @@ class CreateMessages < ActiveRecord::Migration[7.0]
       # t.references :negotiation, null: false, foreign_key: { on_delete: :cascade }
       # t.references :user, null: false, foreign_key: { on_delete: :cascade }
       # t.references :user, null: false, foreign_key: true, index: true
-      t.references :negotiation, null: false, foreign_key: true, index: true
+      # t.references :negotiation, null: false, foreign_key: true, index: true
       t.text :content, null: false
       t.timestamps
 
-      t.index [:negotiation_id, :created_at]
+      # t.index [:negotiation_id, :created_at]
       # t.index [:user_id, :created_at]
     end
   end

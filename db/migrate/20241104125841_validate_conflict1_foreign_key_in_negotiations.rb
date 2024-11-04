@@ -1,0 +1,5 @@
+class ValidateConflict1ForeignKeyInNegotiations < ActiveRecord::Migration[7.0]
+  def change
+    validate_foreign_key :negotiations, :conflicts, column: :conflict1_id
+  end
+end

@@ -6,7 +6,6 @@ class CreateIssues < ActiveRecord::Migration[7.0]
       t.text :explanation, null: false
       t.integer :status, default: 0, null: false
       # t.references :conflict, null: false, foreign_key: true, index: true
-      # t.references :user, null: false, foreign_key: true, index: true
       # t.references :conflict, null: false, index: { algorithm: :concurrently }
       t.timestamps
     end

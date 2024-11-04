@@ -7,3 +7,4 @@ class AddUserToConflicts < ActiveRecord::Migration[7.0]
     add_reference :conflicts, :user, null: false, index: { algorithm: :concurrently }
   end
 end
+

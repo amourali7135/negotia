@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_04_154115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,7 +90,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.bigint "issue_id", null: false
     t.index ["conflict_type"], name: "index_conflicts_on_conflict_type"
+    t.index ["issue_id"], name: "index_conflicts_on_issue_id"
     t.index ["priority"], name: "index_conflicts_on_priority"
     t.index ["status"], name: "index_conflicts_on_status"
     t.index ["user_id"], name: "index_conflicts_on_user_id"
@@ -113,6 +115,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.boolean "is_flexible", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "issue_id", null: false
+    t.bigint "practice_session_id", null: false
+    t.index ["issue_id"], name: "index_issue_analyses_on_issue_id"
+    t.index ["practice_session_id", "issue_id"], name: "index_issue_analyses_on_practice_session_id_and_issue_id", unique: true
+    t.index ["practice_session_id"], name: "index_issue_analyses_on_practice_session_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -127,12 +134,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.bigint "negotiation_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "negotiation_id", null: false
+    t.bigint "user_id", null: false
     t.index ["negotiation_id", "created_at"], name: "index_messages_on_negotiation_id_and_created_at"
     t.index ["negotiation_id"], name: "index_messages_on_negotiation_id"
+    t.index ["user_id", "created_at"], name: "index_messages_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "negotiations", force: :cascade do |t|
@@ -143,9 +153,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.datetime "deadline"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user1_id", null: false
+    t.bigint "user2_id", null: false
+    t.bigint "conflict1_id", null: false
+    t.bigint "conflict2_id"
+    t.index ["conflict1_id"], name: "index_negotiations_on_conflict1_id"
+    t.index ["conflict2_id"], name: "index_negotiations_on_conflict2_id"
     t.index ["deadline"], name: "index_negotiations_on_deadline"
     t.index ["status"], name: "index_negotiations_on_status"
+    t.index ["user1_id"], name: "index_negotiations_on_user1_id"
     t.index ["user2_email"], name: "index_negotiations_on_user2_email"
+    t.index ["user2_id"], name: "index_negotiations_on_user2_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -153,6 +171,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "recipient_id", null: false
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_id", "status"], name: "index_notifications_on_recipient_id_and_status"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+    t.index ["sender_id", "created_at"], name: "index_notifications_on_sender_id_and_created_at"
+    t.index ["sender_id"], name: "index_notifications_on_sender_id"
   end
 
   create_table "practice_session_outcomes", force: :cascade do |t|
@@ -163,20 +190,30 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "practice_session_id", null: false
+    t.index ["practice_session_id"], name: "index_practice_session_outcomes_on_practice_session_id"
   end
 
   create_table "practice_sessions", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "conflict_id", null: false
+    t.index ["conflict_id"], name: "index_practice_sessions_on_conflict_id"
+    t.index ["user_id", "conflict_id"], name: "index_practice_sessions_on_user_id_and_conflict_id"
+    t.index ["user_id"], name: "index_practice_sessions_on_user_id"
   end
 
   create_table "proposal_responses", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.integer "status", null: false
     t.text "comment", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "proposal_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["proposal_id", "user_id"], name: "idx_proposal_responses_on_proposal_and_user", unique: true
+    t.index ["proposal_id"], name: "index_proposal_responses_on_proposal_id"
     t.index ["status", "created_at"], name: "idx_proposal_responses_by_status_and_date"
     t.index ["user_id", "created_at"], name: "idx_proposal_responses_by_user_and_date"
     t.index ["user_id"], name: "index_proposal_responses_on_user_id"
@@ -188,6 +225,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
     t.integer "proposal_responses_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "negotiation_id", null: false
+    t.bigint "proposed_by_id", null: false
+    t.bigint "issue_id"
+    t.index ["issue_id"], name: "index_proposals_on_issue_id"
+    t.index ["negotiation_id"], name: "index_proposals_on_negotiation_id"
+    t.index ["proposed_by_id"], name: "index_proposals_on_proposed_by_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -206,7 +249,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_141924) do
   add_foreign_key "background_migration_jobs", "background_migrations", column: "migration_id", on_delete: :cascade
   add_foreign_key "background_migrations", "background_migrations", column: "parent_id", on_delete: :cascade
   add_foreign_key "background_schema_migrations", "background_schema_migrations", column: "parent_id", on_delete: :cascade
+  add_foreign_key "conflicts", "issues"
   add_foreign_key "conflicts", "users"
-  add_foreign_key "messages", "negotiations"
+  add_foreign_key "issue_analyses", "issues"
+  add_foreign_key "issue_analyses", "practice_sessions"
+  add_foreign_key "messages", "negotiations", on_delete: :cascade
+  add_foreign_key "messages", "users", on_delete: :cascade
+  add_foreign_key "negotiations", "conflicts", column: "conflict1_id"
+  add_foreign_key "negotiations", "conflicts", column: "conflict2_id"
+  add_foreign_key "negotiations", "users", column: "user1_id"
+  add_foreign_key "negotiations", "users", column: "user2_id"
+  add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "notifications", "users", column: "sender_id"
+  add_foreign_key "practice_session_outcomes", "practice_sessions"
+  add_foreign_key "practice_sessions", "conflicts"
+  add_foreign_key "practice_sessions", "users"
+  add_foreign_key "proposal_responses", "proposals"
   add_foreign_key "proposal_responses", "users"
+  add_foreign_key "proposals", "issues"
+  add_foreign_key "proposals", "negotiations"
+  add_foreign_key "proposals", "users", column: "proposed_by_id"
 end
